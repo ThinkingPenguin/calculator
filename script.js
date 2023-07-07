@@ -8,6 +8,7 @@ const buttons = document.querySelectorAll('button');
 let numberOne = '';
 let numberTwo = '';
 let operatorSign = '';
+let result = 0
 
 /*
 function checkSign() {
@@ -33,6 +34,7 @@ Array.from(numbers).forEach(function (numb) {
             numberTwo += numb.value; 
         }
         screen.value += numb.value;
+        clearScreen();
 
         //console.log(numberOne, numberTwo);
 
@@ -52,7 +54,7 @@ Array.from(numbers).forEach(function (numb) {
         
     });   
 });
-clearScreen();
+
 signOperator.forEach(op => {
     op.addEventListener('click', e => {
         if (e.target.value !== '=') {
@@ -71,26 +73,39 @@ signOperator.forEach(op => {
 function clearScreen() {
     clear.addEventListener('click', () => {
         screen.value = '0';
-        secondScreen.value = ''
+        secondScreen.value = '';
+        numberOne = '';
+        numberTwo = '';
+        operatorSign = '';
+        
     })
 }
 
 function operate(firstNumber, operator, secondNumber){
     switch (operator) {
         case '+':
-            console.log(parseInt(firstNumber) + parseInt(secondNumber));
+            secondScreen.value = firstNumber + ' ' + operator;
+            result = parseInt(firstNumber) + parseInt(secondNumber);
+            screen.value = result;
+            numberOne = result;
             break;
 
         case '-':
-            console.log(parseInt(firstNumber) - parseInt(secondNumber));
+            secondScreen.value = firstNumber + ' ' + operator;
+            result = parseInt(firstNumber) - parseInt(secondNumber);
+            screen.value = result;
             break;
         
         case '*':
-            console.log(parseInt(firstNumber) * parseInt(secondNumber));
+            secondScreen.value = firstNumber + ' ' + operator;
+            result = parseInt(firstNumber) * parseInt(secondNumber);
+            screen.value = result;
             break;
 
         case '/':
-            console.log(parseInt(firstNumber) / parseInt(secondNumber));
+            secondScreen.value = firstNumber + ' ' + operator;
+            result = parseInt(firstNumber) / parseInt(secondNumber);
+            screen.value = result;
             break;
     
         default:
