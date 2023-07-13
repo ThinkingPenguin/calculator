@@ -111,3 +111,12 @@ button:hover {
 .equal-sign:hover {
     background-color: #4e9ed4;
 }
+
+.backspace {
+    background-color: lightcoral;
+    font-size: 30px;
+}
+
+.backspace:hover{
+    background-color: lightpink;
+}
