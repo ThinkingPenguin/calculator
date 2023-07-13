@@ -11,47 +11,45 @@ let numberOne = '';
 let numberTwo = '';
 let operatorSign = '';
 let result = 0
+let decimalCount = 0;
 
-/*
-function checkSign() {
-    Array.from(signOperator).forEach((operand) => {
-        operand.addEventListener('click', () => {
-            //console.log(operand.value);
-            operatorSign = operand.value;
-            console.log(operatorSign);
-            //return operatorSign;
-        });
-    });
-}*/
 
-decimal.addEventListener('click', function(e){
-    let decimalClicked = e.target.value;
-    if (screen.value.indexOf('.') === -1) {
-        screen.value += decimalClicked;
-    } 
+function getDot() {
+    decimal.addEventListener('click', function(e){
+        let decimalClicked = e.target.value;
+        if (screen.value.indexOf('.') === -1) {
+            screen.value += decimalClicked;
+        }  
+    })
     
-})
+}
 
 Array.from(numbers).forEach(function (numb) {
     numb.addEventListener('click', function(){
         if (screen.value === '0') {
             screen.value = '';
         }
-        if (screen.value.length > 3) {
+        if (screen.value.length > 10) {
             screen.value = screen.value.substr(0, 10);
+        }
+        if (numb.value === '.') {
+                decimalCount++;
+            }
+
+        if (numb.value === '.' && decimalCount > 1) {
+            return;
             
         }
 
-
         if (operatorSign === '') {
             numberOne += numb.value;
-            if (numberOne.length > 3) {
+            if (numberOne.length > 10) {
                 numberOne = numberOne.substr(0, 11);
             }
             
         } else {
             numberTwo += numb.value;
-            if (numberTwo.length > 3) {
+            if (numberTwo.length > 10) {
                 numberTwo = numberTwo.substr(0, 11);
                 
             }
@@ -59,22 +57,6 @@ Array.from(numbers).forEach(function (numb) {
         }
         screen.value += numb.value;
         clearScreen();
-
-        //console.log(numberOne, numberTwo);
-
-        //screen.value += btn.value;
-        /*
-        if (btn.value === '+' || btn.value === '*' || btn.value === '-' || 
-        btn.value === '/') {
-            numberOne = screen.value;
-
-        }
-
-        if (btn.value === '=') {
-            numberTwo = screen.value;
-            console.log(numberTwo);
-            
-        }*/
         
     });   
 });
@@ -88,6 +70,7 @@ signOperator.forEach(op => {
             secondScreen.value = numberOne + ' ' + operatorSign;
             screen.value = '';
             numberTwo = '';
+            decimalCount = 0;
             
         } else {
             //console.log('Seconde number ' + numberTwo);
@@ -106,6 +89,7 @@ function clearScreen() {
         numberOne = '';
         numberTwo = '';
         operatorSign = '';
+        decimalCount = 0;
         
     })
 }
@@ -114,27 +98,51 @@ function clearScreen() {
 function operate(firstNumber, operator, secondNumber){
     switch (operator) {
         case '+':
-            result = parseInt(firstNumber) + parseInt(secondNumber);
-            screen.value = result;
-            
+            if (secondScreen.value.indexOf('.')) {
+                result = parseFloat(firstNumber) + parseFloat(secondNumber);
+                screen.value = result;
+            }  else {
+                result = parseInt(firstNumber) + parseInt(secondNumber);
+                screen.value = result;
+            }
+            //decimalCount = 0;
             break;
 
         case '-':
-            secondScreen.value = firstNumber + ' ' + operator;
-            result = parseInt(firstNumber) - parseInt(secondNumber);
-            screen.value = result;
+            if (secondScreen.value.indexOf('.')) {
+                result = parseFloat(firstNumber) - parseFloat(secondNumber);
+                screen.value = result;
+            }  else {
+                result = parseInt(firstNumber) - parseInt(secondNumber);
+                screen.value = result;
+            }
+            //decimalCount = 0;
             break;
         
         case '*':
-            secondScreen.value = firstNumber + ' ' + operator;
-            result = parseInt(firstNumber) * parseInt(secondNumber);
-            screen.value = result;
+            if (secondScreen.value.indexOf('.')) {
+                result = parseFloat(firstNumber) * parseFloat(secondNumber);
+                screen.value = result;
+            }  else {
+                result = parseInt(firstNumber) * parseInt(secondNumber);
+                screen.value = result;
+            }
+            //decimalCount = 0;
             break;
 
         case '/':
-            secondScreen.value = firstNumber + ' ' + operator;
-            result = parseInt(firstNumber) / parseInt(secondNumber);
-            screen.value = result;
+            if (secondScreen.value.indexOf('.')) {
+                result = parseFloat(firstNumber) / parseFloat(secondNumber);
+                screen.value = result;
+            }  else {
+                result = parseInt(firstNumber) / parseInt(secondNumber);
+                screen.value = result;
+            }
+            if(secondNumber === "0"){
+                screen.value = "Error, can't divide by 0";
+                return;
+            }
+            //decimalCount = 0;
             break;
     
         default:
@@ -142,3 +150,4 @@ function operate(firstNumber, operator, secondNumber){
     }
 
 }
+
