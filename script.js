@@ -6,17 +6,28 @@ const equal = document.getElementsByClassName('equal-sign');
 const signOperator = document.querySelectorAll('.operator');
 const buttons = document.querySelectorAll('button');
 const decimal = document.querySelector(".decimal")
-const maxi = 3;
+const backspace = document.querySelector('.backspace');
 let numberOne = '';
 let numberTwo = '';
 let operatorSign = '';
 let result = 0
+let storeSign = [];
+let counterSign = 0;
 let decimalCount = 0;
-
 
 function isFloat(n){
     return Number(n) === n && n % 1 !== 0;
   }
+
+function deleteLastEntry() {
+    let screenVal = screen.value;
+    backspace.addEventListener('click', () =>{
+        screen.value = screenVal.slice(0, -1);
+    })
+    console.log(numberOne);
+}
+deleteLastEntry();
+
 
 Array.from(numbers).forEach(function (numb) {
     numb.addEventListener('click', function(){
@@ -45,12 +56,13 @@ Array.from(numbers).forEach(function (numb) {
             numberTwo += numb.value;
             if (numberTwo.length > 10) {
                 numberTwo = numberTwo.substr(0, 11);
-                
             }
             
+            
         }
+
         screen.value += numb.value;
-        clearScreen();
+        
         
     });   
 });
@@ -59,12 +71,39 @@ signOperator.forEach(op => {
     op.addEventListener('click', e => {
         if (e.target.value !== '=') {
             operatorSign = e.target.value;
-            console.log('Number One: ' + numberOne);
-            console.log('Operator ' + operatorSign);
+            //console.log('Number One: ' + numberOne);
+            //console.log('Operator ' + operatorSign);
             secondScreen.value = numberOne + ' ' + operatorSign;
+            storeSign.push(operatorSign);
+            if (numberTwo) {
+                //let splitSec = secondScreen.value.split(' ');
+                //storeSign.push(splitSec[splitSec.length - 1]);
+                console.log(storeSign);
+                console.log(operatorSign)
+                //console.log(splitSec)
+                operate(numberOne, storeSign[counterSign], numberTwo);
+                secondScreen.value = result + ' ' + operatorSign;
+                //secondScreen.value = numberOne + ' ' + operatorSign + ' ' + numberTwo + ' = ';
+                counterSign++;
+                
+                if (isFloat(result) === true) {
+                    numberOne = result.toFixed(2);
+                } else {
+                    numberOne = result;
+                }
+                
+                //screen.value = result;
+            } 
+            
+            console.log(result)
+            screen.value = result;
             screen.value = '';
             numberTwo = '';
+            //operatorSign = '';
             decimalCount = 0;
+            
+            
+            
             
         } else {
             //console.log('Seconde number ' + numberTwo);
@@ -75,9 +114,25 @@ signOperator.forEach(op => {
             } else {
                 numberOne = result;
             }
+            screen.value = result;
+            numberTwo = '';
+            storeSign = [];
+            counterSign = 0;
+/*
+            if (e.target.value !== '=') {
+                operate(numberOne, operatorSign, numberTwo);
+                secondScreen.value = numberOne + ' ' + operatorSign + ' ' + numberTwo + ' = ';
+                if (isFloat(result) === true) {
+                    numberOne = result.toFixed(2);
+                } else {
+                    numberOne = result;
+                }
+                
+            }*/
             
             
         }
+        
     })
 })
 
@@ -89,10 +144,12 @@ function clearScreen() {
         numberTwo = '';
         operatorSign = '';
         decimalCount = 0;
+        result = '';
+        counterSign = 0;
+        storeSign = [];
         
     })
 }
-
 
 function operate(firstNumber, operator, secondNumber){
     switch (operator) {
@@ -141,10 +198,19 @@ function operate(firstNumber, operator, secondNumber){
         case '*':
             if (secondScreen.value.indexOf('.')) {
                 result = parseFloat(firstNumber) * parseFloat(secondNumber);
-                screen.value = result.toFixed(2);
+                if (isFloat(result) === true) {
+                    screen.value = result.toFixed(2);
+                } else {
+                    screen.value = result;
+                }
+
             }  else {
                 result = parseInt(firstNumber) * parseInt(secondNumber);
-                screen.value = result;
+                if (isFloat(result) === true) {
+                    screen.value = result.toFixed(2);
+                } else {
+                    screen.value = result;
+                }
             }
             //decimalCount = 0;
             break;
@@ -173,8 +239,11 @@ function operate(firstNumber, operator, secondNumber){
             break;
     
         default:
+            numberOne = '';
+            numberTwo = '';
             break;
     }
 
 }
 
+clearScreen();
