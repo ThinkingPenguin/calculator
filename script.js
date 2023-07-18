@@ -18,11 +18,13 @@ let decimalCount = 0;
 function isFloat(n){
     return Number(n) === n && n % 1 !== 0;
   }
-function listenKeyboard(numero){
+  /*
+function listenKeyboard(){
     document.addEventListener('keydown', (e) => {
         switch (e.key) {
             case '1':
-                console.log(e.key);
+                numberOne += numb.value
+                screen.value += numb.value;
                 break;
             case '2':
                 console.log(e.key);
@@ -63,7 +65,8 @@ function listenKeyboard(numero){
         }
     })
 
-}
+}*/
+
 
 
 function deleteLastEntry() {
@@ -101,6 +104,7 @@ Array.from(numbers).forEach(function (numb) {
         if (numb.value === '.' && decimalCount > 1) {
             return;
         }
+
 
         if (operatorSign === '') {
             if (numb.id === 'backspace') {
@@ -212,6 +216,18 @@ signOperator.forEach(op => {
     })
 })
 
+function clrDivide() {
+    screen.value = "0";
+    secondScreen.value = "";
+    numberOne = "";
+    numberTwo = "";
+    operatorSign = "";
+    decimalCount = 0;
+    result = "";
+    counterSign = 0;
+    storeSign = [];
+}
+
 function clearScreen() {
     clear.addEventListener('click', () => {
         screen.value = '0';
@@ -307,10 +323,13 @@ function operate(firstNumber, operator, secondNumber){
                     screen.value = result;
                 }
             }
-            if(secondNumber === "0"){
-                screen.value = "Error, can't divide by 0";
-                return;
+            if(secondNumber == "0"){
+                alert("Error, can't divide by 0"); 
+                
             }
+            
+            
+
             //decimalCount = 0;
             break;
     
